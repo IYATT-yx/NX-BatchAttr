@@ -16,15 +16,15 @@ staticAttributes = {
 }
 
 # 文件名自动解析映射的 NX 属性名称
-# 可根据企业标准/自定义需求修改属性 Key（如 "DB_PART_NAME", "DB_PART_NO", "DMaterial" 等）
+# 可根据企业标准/自定义需求修改属性 Key（如 "DB_PART_NO", "DB_PART_NAME", "DMaterial" 等）
 fileNameAttributes = {
-    "name": "DB_PART_NAME",    # 对应 [名字]
     "number": "DB_PART_NO",    # 对应 [图号]
+    "name": "DB_PART_NAME",    # 对应 [名字]
     "material": "DMaterial"    # 对应 [材料]
 }
 
 # 开关选项配置
-# parseFileName: 是否从文件名自动解析 "名字 [图号] [材料]" (空格分隔，名字必然存在，图号/材料可选)
+# parseFileName: 是否从文件名自动解析 "[图号] [名称] [材料]" (空格分隔，只有一个字段时，默认为名称)
 # overwriteExisting: 是否覆盖已存在的同名属性 (True: 覆盖, False: 仅新增缺失属性)
 featureConfig = {
     "parseFileName": True,
