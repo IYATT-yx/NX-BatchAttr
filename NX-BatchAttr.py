@@ -2,7 +2,7 @@
 file: NX-BatchAttr.py
 description: NX 批量属性设置工具
 author: IYATT-yx
-copyright:  Copyright (c) 2026 IYATT-yx.
+copyright:   Copyright (c) 2026 IYATT-yx.
             Licensed under the MIT License. See LICENSE file in the project root for full license information.
 """
 import os
@@ -146,14 +146,33 @@ def updatePartAttributes(part, lw, processedParts, stats):
         nameWithoutExt, _ = os.path.splitext(filename)
         targetAttributes = dict(config.staticAttributes)
 
-        # 解析文件名 “图号 名称”
+        # 解析文件名 “图号 [名称] [材料]”
         if config.featureConfig.get("parseFileName", False):
-            parts = nameWithoutExt.split(" ", 1)
-            if len(parts) == 2:
-                targetAttributes["DB_PART_NO"] = parts[0]
-                targetAttributes["DB_PART_NAME"] = parts[1]
+            tokens = nameWithoutExt.strip().split()
+            
+            # 读取 config 中的属性 key 映射（带有默认备用值）
+            attrMap = getattr(config, 'fileNameAttributes', {})
+            attrNumberKey = attrMap.get("number", "DB_PART_NO")
+            attrNameKey = attrMap.get("name", "DB_PART_NAME")
+            attrMaterialKey = attrMap.get("material", "DMaterial")
+
+            # 1. 只有一个字段：设置为【名称】
+            if len(tokens) == 1:
+                targetAttributes[attrNameKey] = tokens[0]
+
+            # 2. 两个字段：分别设置为【图号】和【名称】
+            elif len(tokens) == 2:
+                targetAttributes[attrNumberKey] = tokens[0]
+                targetAttributes[attrNameKey] = tokens[1]
+
+            # 3. 三个及以上字段：分别设置为【图号】、【名称】和【材料】
+            elif len(tokens) >= 3:
+                targetAttributes[attrNumberKey] = tokens[0]
+                targetAttributes[attrNameKey] = tokens[1]
+                targetAttributes[attrMaterialKey] = tokens[2]
+
             else:
-                lw.WriteLine(f"\n[!] 规则不匹配: {filename} (未提取到 图号/名称)")
+                lw.WriteLine(f"\n[!] 文件名为空或无法解析: {filename}")
 
         lw.WriteLine(f"\n[PART] 正在处理: {filename}")
         lw.WriteLine("  │")
