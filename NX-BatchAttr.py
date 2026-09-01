@@ -2,6 +2,7 @@
 file: NX-BatchAttr.py
 description: NX 批量属性设置工具
 author: IYATT-yx
+repository: https://github.com/IYATT-yx/NX-BatchAttr
 copyright:   Copyright (c) 2026 IYATT-yx.
             Licensed under the MIT License. See LICENSE file in the project root for full license information.
 """
