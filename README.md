@@ -9,6 +9,7 @@
 ## 测试环境
 
 * Siemens NX 2506  
+* Designcenter 2606（2026 年 Siemens 给改了个新名字）
 
 ## 使用方法
 
