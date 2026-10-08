@@ -206,10 +206,12 @@ def updatePartAttributes(part, lw, processedParts, stats):
         stats["parts_failed"] += 1
 
 def getNxAttribute(part, attrName):
-    """读取零件属性值"""
+    """读取零件属性值（自动处理类型并过滤空字符串）"""
     try:
-        if part.HasUserAttribute(attrName, NXOpen.NXObject.AttributeType.String, -1):
-            return part.GetStringUserAttribute(attrName, -1)
+        if part.HasUserAttribute(attrName, NXOpen.NXObject.AttributeType.Any, -1):
+            val = part.GetUserAttributeAsString(attrName, NXOpen.NXObject.AttributeType.Any, -1)
+            if val is not None and val.strip() != '':
+                return val
     except Exception:
         pass
     return None
